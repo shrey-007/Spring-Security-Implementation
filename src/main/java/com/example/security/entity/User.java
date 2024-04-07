@@ -4,7 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-    @Entity
+
+import java.util.Date;
+
+@Entity
     public class User {
 
         @Id
@@ -20,6 +23,11 @@ import jakarta.persistence.Id;
         private String password;
 
         private String role;
+
+        //These three new fields isAccountNonLocked,failedAttempt,lockTime is for limiting number of login by user
+        private boolean isAccountNonLocked;
+        private int failedAttempt;
+        private Date lockTime;
 
         public int getId() {
             return id;
@@ -74,5 +82,28 @@ import jakarta.persistence.Id;
             return "User [id=" + id + ", name=" + name + ", mobileNo=" + mobileNo + ", password=" + password + "]";
         }
 
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
     }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+    }
+
+    public int getFailedAttempt() {
+        return failedAttempt;
+    }
+
+    public void setFailedAttempt(int failedAttempt) {
+        this.failedAttempt = failedAttempt;
+    }
+
+    public Date getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(Date lockTime) {
+        this.lockTime = lockTime;
+    }
+}
 

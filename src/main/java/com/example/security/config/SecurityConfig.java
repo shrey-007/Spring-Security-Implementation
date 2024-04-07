@@ -18,6 +18,9 @@ public class SecurityConfig {
     @Autowired
     // Since isko yaha autowire kara hai toh iska object bhi banana padega inject krne ke liye toh iski class mai @Component lagado
     public CustomAuthSucessHandler customAuthSucessHandler;
+    @Autowired
+    // To limit number of attempts made by user to login
+    public CustomFilureHandler customFilureHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -65,6 +68,8 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll().and()
                 .formLogin().loginPage("/signin").loginProcessingUrl("/userLogin")
+                // To limit number of attempts made by user to login
+                .failureHandler(customFilureHandler)
                 // Ye customAuthSucessHandler ka object hume bataege ki konse role ke user ko kaha redirect krna hai successful login ke baad toh iski class implement krni padegi, pehle direcly defaultSuccessUrl() use kr rhe the but voh saare users ko same jagah bhejega login ke baad isliye ye use kara
                 .successHandler(customAuthSucessHandler)
                 .permitAll();
